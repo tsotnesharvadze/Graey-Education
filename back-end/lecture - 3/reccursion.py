@@ -8,3 +8,12 @@ def fibo(n: int) -> int:
         return 1
     return fibo(n-1) + fibo(n-2)
 
+
+
+@time_it
+def container():
+    fibo(5)
+
+
+if __name__ == '__main__':
+    container()

@@ -11,9 +11,9 @@ def fibo(n: int) -> int:
 
 
 @time_it
-def container():
-    fibo(5)
+def container(n):
+    fibo(n)
 
 
 if __name__ == '__main__':
-    container()
+    container(5)

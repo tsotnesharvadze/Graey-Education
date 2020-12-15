@@ -2,11 +2,10 @@ import time
 from functools import wraps
 
 def logging(func):
-    file = open(f'{func.__name__}_LOG', 'a')
     @wraps(func)
     def wrapper(*args, **kwargs):
-        file.writelines(f'ფუნქცია გამოიძახა არგუმენტებით: {args} {kwargs}\n')
-        file.close()
+        with open(f'{func.__name__}_LOG', 'a') as file:
+            file.writelines(f'ფუნქცია გამოიძახა არგუმენტებით: {args} {kwargs}\n')
         return func(*args, **kwargs)        
   
     return wrapper
@@ -29,7 +28,7 @@ def time_it(func):
 def display(name: str, score: int):
     print(f'{name}ს აქვს {score} ქულა')
 
-# display = time_it(logging(display))
+# # display = time_it(logging(display))
 
 from typing import Any, Optional, Dict
 
@@ -52,9 +51,10 @@ def caluclate(x: int):
     return x / 0
 
 
-# print(
-#     caluclate(3)
-# )
 
 if __name__ == '__main__':
-    display('მიშო', 15)
+    # print(
+    # caluclate(3)
+    # )
+
+    display('Guido', 15)

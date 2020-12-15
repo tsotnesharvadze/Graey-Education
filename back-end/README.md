@@ -1,3 +1,3 @@
-Graey-Education Repo
+Graey-Education Back-End მასალა
 
-გრეი-ედუს რეპოზიტორია
+გრეი-ედუს ბექ-ენდის მასალა

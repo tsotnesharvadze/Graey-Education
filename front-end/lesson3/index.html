@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="counter">
+    <h1 style="text-align: center">რა ტიპი ხარ?</h1>
+    <span v-text="`Counter: ${counter}`"></span>
+    <input :type="textIsShow ? 'text': 'password' ">
+
+    <a href="#123123123123" @click.prevent="myClick">damachire</a>
+
+    <form action="." method="get" @submit.prevent="mysubmit">
+        <input type="submit" value="submit button" >
+<!--        <button>546789</button>-->
+
+    </form>
+
+<!--    <button @click="myClick($event, 4)" v-text="buttonText" style="position: absolute; left: 150px"></button>-->
+    <button @click="myClick($event, 4)" @mouseover="myover($event)" style="position: absolute">კაი(ბიჭი/გოგო)</button>
+
+<!--    <div style="background-color: red; width: 200px; height: 300px"-->
+<!--        @mouseover="myover($event, true)"-->
+<!--        @mouseleave="myover($event, false)"-->
+<!--    ></div>-->
+
+</div>
+<script src="https://unpkg.com/vue@next"></script>
+<script src="main.js"></script>
+</body>
+</html>
+
+

@@ -1,22 +1,12 @@
 Vue.createApp({
+    components:{
+        userComponent
+    },
     data(){
         return {
             data: [],
             userDetail: {}
         }
-    },
-    methods:{
-      sendDetailRequest(userId) {
-          axios.get(    //
-            `https://jsonplaceholder.typicode.com/users/${userId}`,
-            )
-          .then((response) => {
-              this.userDetail = response.data;
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-      }
     },
     mounted(){
         axios.get(

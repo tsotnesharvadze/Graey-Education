@@ -8,22 +8,15 @@
 </head>
 <body>
 <div id="app">
-    <ul v-if="!Object.keys(userDetail).length">
+    <ul>
         <li v-for="(user, index) in data" :key="index">
-            <a href="#" @click.prevent="sendDetailRequest(user.id)">{{user.username}}</a>
+            <user-component :user="user"></user-component>
         </li>
     </ul>
-    <div v-else>
-        <button @click="userDetail = {}">back</button>
-        <p>{{userDetail.username}}</p>
-        <p>{{userDetail.name}}</p>
-        <p>{{userDetail.email}}</p>
-        <p>{{userDetail.phone}}</p>
-        <p>company:{{userDetail.company.name}}</p>
-        <a :href="`http://${userDetail.website}`" v-text="userDetail.website"></a>
-    </div>
 </div>
 
+
+<script src="components/userComponent.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

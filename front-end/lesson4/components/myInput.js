@@ -1,14 +1,13 @@
 const myInput =  {
     template:`
         <div>
-            Generate Random Number: <button @click="makeEmit">{{value}}</button>
+            Generate Random Number: <button @click="makeEmit">{{modelValue}}</button>
         </div>
     `,
-    props: ['value'],
+    props: ['modelValue'],
     methods:{
         makeEmit(){
-            console.log('asdasdasd')
-            this.$emit('input',  Math.random())
+            this.$emit('update:modelValue',  Math.random())
         }
     }
 };

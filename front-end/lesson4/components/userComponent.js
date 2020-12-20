@@ -13,7 +13,7 @@ const userComponent = {
     </div>
        
     `,
-    props: ['user'],
+    props: ['user', 'value'],
     data() {
         return {
             detailData: {},
@@ -22,6 +22,8 @@ const userComponent = {
     },
     methods: {
         sendDetailRequest() {
+            this.$emit('mouseIsOver', this.user.username);
+            this.$emit('input', this.user.username);
             if (!Object.keys(this.detailData).length){
                 axios.get(
                     `https://jsonplaceholder.typicode.com/users/${this.user.id}`,

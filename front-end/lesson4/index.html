@@ -8,14 +8,20 @@
 </head>
 <body>
 <div id="app">
+    <my-input :value="myText" @input="(text) => myText = text"></my-input>
     <ul>
         <li v-for="(user, index) in data" :key="index">
-            <user-component :user="user"></user-component>
+            <user-component :user="user" @mouse-is-over="(username)=>{selectedUser=username}"></user-component>
         </li>
     </ul>
+    <div style="text-align: center" v-if="selectedUser.length">
+        არჩეული მომხმარებელი:<p>{{selectedUser}}</p>
+    </div>
+
 </div>
 
 
+<script src="components/myInput.js"></script>
 <script src="components/userComponent.js"></script>
 <script src="main.js"></script>
 </body>

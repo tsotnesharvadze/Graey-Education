@@ -1,11 +1,21 @@
 Vue.createApp({
     components:{
-        userComponent
+        userComponent,
+        myInput
     },
     data(){
         return {
             data: [],
-            userDetail: {}
+            selectedUser: '',
+            myText: 'click me'
+        }
+    },
+    methods:{
+      // changeSelectedUserName(username){
+      //     this.selectedUser = username
+      // }
+        aaa(a){
+            console.log(a, 's')
         }
     },
     mounted(){

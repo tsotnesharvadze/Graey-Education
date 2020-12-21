@@ -15,7 +15,7 @@ print(id(x))
 import time
 from typing import Iterable
 
-from django.db import transaction
+# from django.db import transaction
 
 
 def my_upper(s):

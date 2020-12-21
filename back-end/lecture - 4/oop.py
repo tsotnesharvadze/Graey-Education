@@ -62,7 +62,7 @@ class TwoLeggedAnimal(Animal):
 
 
 class NewMeta(type):
-    def __new__(cls, class_name, parents, properties):
+    def __new__(mcs, class_name, parents, properties):
         _private = properties.pop('_private', None)
         sub_meta = properties.pop('Meta', None)
         fields = getattr(sub_meta, 'fields', None)
@@ -74,7 +74,7 @@ class NewMeta(type):
                 class_name, parents, properties
             )
 
-        return super().__new__(cls, class_name, parents, properties)
+        return super().__new__(mcs, class_name, parents, properties)
 
 
 class Staff(object, metaclass=NewMeta):
@@ -115,8 +115,8 @@ factory = Factory()
 print(len(factory))
 
 # Creating Objects
-tiger = Animal(kind='Raime', speed=100)  # or Animal('Raime', 100)
-lion = Animal(kind='Nomr', speed=90)
+tiger = Animal(kind='Sponge', speed=100)  # or Animal('Sponge', 100)
+lion = Animal(kind='Nomad', speed=90)
 
 if __name__ == '__main__':
     animal = Animal('s', 100)
@@ -129,7 +129,7 @@ if __name__ == '__main__':
         a, a._Staff_private
     )
 
-    my_dog = Dog(['me', 'cotne'], 'rame', 0.2, )
+    my_dog = Dog(['Owner_A', 'Owner_B'], 'Sponge', 0.2, )
     print(my_dog.owners)
 
     def dog__init__(self, x):

@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: lightgray;
+    font-family: sans-serif;
+}
+
+#app {
+    margin: 20px 0;
+}
+
+.selected-filters {
+    display: flex;
+    flex-direction: row;
+    padding: 0 30px;
+    overflow-x: auto;
+    min-height: 40px;
+}
+
+.selected-filters > div {
+    background-color: lightblue;
+    border-radius: 4px;
+    height: 30px;
+    margin: 5px;
+    min-width: 80px;
+    font-size: 20px;
+    text-align: left;
+}
+
+.selected-filters > div:hover span {
+    display: inline;
+}
+
+.selected-filters span {
+    display: none;
+    float: right;
+    color: lightcoral;
+    cursor: pointer;
+}
+
+.side-bar {
+    margin-left: 30px;
+    background-color: lightblue;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.side-bar > h3 {
+    margin: 5px 10px;
+}
+
+.side-bar li {
+    padding: 2px 5px;
+    list-style: none;
+}
+
+.side-bar li input {
+    margin: 2px 5px 2px 0;
+}

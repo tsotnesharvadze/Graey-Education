@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>selected_filters</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="selected-filters">
+            <div v-for="item in selected_filters">
+                {{ item.name }}
+                <span v-on:click="removeValue(item)">X</span>
+            </div>
+        </div>
+        <div class="side-bar">
+            <!-- <input type="text" v-model="textInput">
+            <button v-on:click="textInput = 'new text'">change text</button>
+            <p>{{ textInput }}</p> -->
+            
+            <h3>აირჩიეთ ბრენდი</h3>
+            <ul>
+                <li v-for="brand in brandNames">
+                    <input v-bind:type="input_type" v-model="brand.value">
+                    <span>{{ brand.name }}</span>
+                </li>
+            </ul>
+
+            <!-- <br>
+            <br>
+            <p>X = {{ X }}; Y = {{ Y }}; Z = {{ Z }}</p>
+            <br>
+            <p>X + Y = {{ sumXY() }}</p>
+            <button v-on:click="X++">X++</button>
+            <button v-on:click="Z++">Z++</button> -->
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="app.js"></script>
+</body>
+</html>

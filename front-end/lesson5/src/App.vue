@@ -1,20 +1,49 @@
 <template>
   <div>
     <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <list-display v-model:brandList="brandNames"></list-display>
+    <p>{{brandNames}}</p>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Test from "./components/Test.vue";
 
 export default {
   name: "App",
   data() {
-
+    return {
+      brandNames: [
+        {
+          value: false,
+          name: "intell",
+          id: 1,
+        },
+        {
+          value: false,
+          name: "dell",
+          id: 2,
+        },
+        {
+          value: false,
+          name: "apple",
+          id: 3,
+        },
+        {
+          value: false,
+          name: "hp",
+          id: 4,
+        },
+        {
+          value: false,
+          name: "pentium :d",
+          id: 5,
+        },
+      ],
+    };
   },
   components: {
-    HelloWorld,
+    "list-display": Test,
   },
 };
 </script>

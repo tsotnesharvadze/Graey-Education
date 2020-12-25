@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="input-wrapper">
+            <label for="name">შეიყვანეთ სიის ელემენტი</label>
+            <input type="text" id="name" v-model="inputValue">
+            <button v-on:click="addValue">დამატება</button>
+        </div>
+        <ul>
+            <li v-for="(el, index) in valueList">{{ el }}
+                <span v-on:click="() => {valueList.splice(index, 1);}">X</span>
+            </li>
+        </ul>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="app.js"></script>
+</body>
+</html>

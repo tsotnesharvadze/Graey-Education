@@ -34,6 +34,9 @@ class Piece(metaclass=ABCMeta):
         if end and end.piece.color == self.color:
             return False
 
+    def moved(self, ):
+        pass
+
     def __str__(self):
         return self.display[self.color]
 
@@ -54,12 +57,35 @@ class Rook(Piece):
 
 class Pawn(Piece):
     display = {
-        Color.WHITE: '♙',
-        Color.BLACK: '♟'
+        Color.BLACK: '♙',
+        Color.WHITE: '♟'
     }
+
+    direction = {
+        Color.WHITE: -1,
+        Color.BLACK: 1
+    }
+
+    initial = True
 
     def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
         super().can_move(start, end, board)
+        dy = self.direction[self.color] * (start.y - end.y)
+        dx = abs(start.x - end.x)
+
+        if dy <= 0:
+            return False
+
+        elif end and end.piece.color != self.color:
+            return abs(dx) == dy == 1
+
+        elif self.initial:
+            return 0 < dy <= 2
+
+        return 0 < dy <= 1
+
+    def moved(self, ):
+        self.initial = False
 
 
 class Knight(Piece):
@@ -101,6 +127,9 @@ class King(Piece):
         dy, dx = self.get_distance(start, end)
 
         return (dy + dx == 1) or (dx == 1 and dy == 1)
+
+    def moved(self, ):
+        self.can_castle = False
 
 
 class Queen(Piece):

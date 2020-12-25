@@ -1,6 +1,7 @@
 from typing import List
 
 from pieces import *
+from utils import *
 
 
 class Spot:
@@ -12,10 +13,37 @@ class Spot:
     def __bool__(self):
         return self.piece is not None
 
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return str(self.piece) if self.piece else ' '
+
+
+class Player:
+    def __init__(self, color: 'Color'):
+        self.color = color
+
+    @staticmethod
+    def ask_for_move(select: bool = False):
+        text = 'სად გადავიდე: '
+        if select:
+            text = 'მონიშნეთ ფიგურა: '
+        move = input(text)
+
+        return LETTER_TO_INT.get(move[0].upper()), int(move[1:]) - 1
+
+    def get_valid_move(self, board: 'Board'):
+        start = board.get_spot(*self.ask_for_move(select=True))
+        end = board.get_spot(*self.ask_for_move())
+        return start, end
+
 
 class Board:
     def __init__(self):
         self.board: 'List[List[Spot]]' = []
+        self.player_1 = Player(Color.WHITE)
+        self.player_2 = Player(Color.BLACK)
 
         self.board.append([
             Spot(0, 0, Rook(Color.WHITE)),
@@ -75,6 +103,18 @@ class Board:
         board += '     A    B    C    D    E    F    G    H'
         return board
 
+    @staticmethod
+    def make_move(start: Spot, end: Spot):
+        piece = start.piece
+        start.piece = None
+        end.piece = piece
+        piece.moved()
+
     def get_spot(self, x, y):
         # @TODO: return if possible
         return self.board[y][x]
+
+
+if __name__ == '__main__':
+    b = Board()
+    print(b)

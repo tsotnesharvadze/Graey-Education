@@ -53,8 +53,13 @@ class Rook(Piece):
 
 
 class Pawn(Piece):
-    # პაიკი
-    pass
+    display = {
+        Color.WHITE: '♙',
+        Color.BLACK: '♟'
+    }
+
+    def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
+        super().can_move(start, end, board)
 
 
 class Knight(Piece):

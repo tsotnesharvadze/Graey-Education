@@ -58,7 +58,10 @@ class Pawn(Piece):
 
 
 class Knight(Piece):
-    # მხედარი
+    display = {
+        Color.WHITE: '♞',
+        Color.BLACK: '♘',
+    }
 
     def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
         super().can_move(start, end, board)
@@ -68,7 +71,10 @@ class Knight(Piece):
 
 
 class Bishop(Piece):
-    # კუ
+    display = {
+        Color.WHITE: '♝',
+        Color.BLACK: '♗',
+    }
 
     def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
         super().can_move(start, end, board)
@@ -77,6 +83,10 @@ class Bishop(Piece):
 
 
 class King(Piece):
+    display = {
+        Color.WHITE: '♚',
+        Color.BLACK: '♔',
+    }
     # მეფე
     castled = False
     can_castle = True
@@ -89,8 +99,12 @@ class King(Piece):
 
 
 class Queen(Piece):
+    display = {
+        Color.WHITE: '♕',
+        Color.BLACK: '♛',
+    }
 
     def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
-        super().can_move(start, end, game)
+        super().can_move(start, end, board)
         dy, dx = self.get_distance(start, end)
         return dy * dx == 0 or dy == dx

@@ -21,8 +21,12 @@ class Spot:
 
 
 class Player:
-    def __init__(self, color: 'Color'):
+    def __init__(self, color: 'Color', turn):
         self.color = color
+        self.turn = turn
+
+    def __bool__(self):
+        return self.turn
 
     @staticmethod
     def ask_for_move(select: bool = False):
@@ -42,8 +46,9 @@ class Player:
 class Board:
     def __init__(self):
         self.board: 'List[List[Spot]]' = []
-        self.player_1 = Player(Color.WHITE)
-        self.player_2 = Player(Color.BLACK)
+        self.player_1 = Player(Color.WHITE, True)
+        self.player_2 = Player(Color.BLACK, False)
+        self.current_player = self.player_1 or self.player_2
 
         self.board.append([
             Spot(0, 0, Rook(Color.WHITE)),
@@ -102,6 +107,11 @@ class Board:
         board += "\n   ---------------------------------------\n"
         board += '     A    B    C    D    E    F    G    H'
         return board
+
+    def update_turn(self):
+        self.player_1.turn = not self.player_1
+        self.player_2.turn = not self.player_2
+        self.current_player = self.player_1 or self.player_2
 
     @staticmethod
     def make_move(start: Spot, end: Spot):

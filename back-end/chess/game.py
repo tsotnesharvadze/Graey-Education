@@ -3,6 +3,7 @@ from typing import List
 from pieces import *
 from utils import *
 
+#
 
 class Spot:
     def __init__(self, x: int, y: int, piece: 'Piece' = None):

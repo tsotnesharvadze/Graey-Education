@@ -1,2 +1,3 @@
-# ტერმინალის ჭადრაკი: შესავალი ოოპ-ში
-# Terminal Chess: Introduction to OOP
+# Chess 
+ტერმინალის ჭადრაკი: შესავალი ოოპ-ში
+Terminal Chess: Introduction to OOP

@@ -26,12 +26,7 @@ class Piece(metaclass=ABCMeta):
 
     @abstractmethod
     def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
-        # without distance method
-        dy, dx = self.get_distance(start, end)
-        if dy == dx == 0:
-            return False
-
-        if end and end.piece.color == self.color:
+        if (start is end) or (end and end.piece.color == self.color):
             return False
 
     def moved(self, ):

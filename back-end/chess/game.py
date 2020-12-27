@@ -5,7 +5,7 @@ from utils import *
 
 
 class Spot:
-    def __init__(self, x: int, y: int, piece: 'Piece' = None):
+    def __init__(self, y: int, x: int, piece: 'Piece' = None):
         self.x = x
         self.y = y
         self.piece = piece

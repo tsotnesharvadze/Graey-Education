@@ -85,6 +85,9 @@ class Pawn(Piece):
         elif end and end.piece.color != self.color:
             return abs(dx) == dy == 1
 
+        elif dx > 0:
+            return False
+
         elif self.initial:
             return 0 < dy <= 2
 

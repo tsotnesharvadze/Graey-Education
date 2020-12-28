@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pieces import *
 from utils import *
@@ -29,7 +29,7 @@ class Player:
         return self.turn
 
     @staticmethod
-    def ask_for_move(select: bool = False):
+    def ask_for_move(select: bool = False) -> Tuple[int, int]:
         text = 'სად გადავიდე: '
         if select:
             text = 'მონიშნეთ ფიგურა: '
@@ -37,18 +37,10 @@ class Player:
 
         return LETTER_TO_INT.get(move[0].upper()), int(move[1:]) - 1
 
-    def get_valid_move(self, board: 'Board'):
-        start = board.get_spot(*self.ask_for_move(select=True))
-        end = board.get_spot(*self.ask_for_move())
-        return start, end
-
 
 class Board:
     def __init__(self):
         self.board: 'List[List[Spot]]' = []
-        self.player_1 = Player(Color.WHITE, True)
-        self.player_2 = Player(Color.BLACK, False)
-        self.current_player = self.player_1 or self.player_2
 
         self.board.append([
             Spot(0, 0, Rook(Color.WHITE)),
@@ -108,7 +100,38 @@ class Board:
         board += '     A    B    C    D    E    F    G    H'
         return board
 
+    def get_spot(self, x, y):
+        # @TODO: return if possible
+        return self.board[y][x]
+
+
+class GameStatus(Enum):
+    ACTIVE = 'ACTIVE'
+    FOREFIET = 'FORFEIT'
+
+
+class Game:
+    def __init__(self):
+        self.board = Board()
+        self.player_1 = Player(Color.WHITE, True)
+        self.player_2 = Player(Color.BLACK, False)
+        self.current_player = self.player_1 or self.player_2
+        self.status = GameStatus.ACTIVE
+
+    def run(self):
+        print(self.board)
+        while self.status == GameStatus.ACTIVE:
+            move = self.get_valid_move()
+            if move is None:
+                self.status = GameStatus.FOREFIET
+                break
+
+            self.make_move(*move)
+            self.update_turn()
+            print(self.board)
+
     def update_turn(self):
+        """ Updates Turn """
         self.player_1.turn = not self.player_1
         self.player_2.turn = not self.player_2
         self.current_player = self.player_1 or self.player_2
@@ -120,11 +143,26 @@ class Board:
         end.piece = piece
         piece.moved()
 
-    def get_spot(self, x, y):
-        # @TODO: return if possible
-        return self.board[y][x]
+    def get_valid_move(self) -> Optional[Tuple[Spot, Spot]]:
+        while True:
+            try:
+                user_start = self.current_player.ask_for_move(select=True)
+                if user_start is None:
+                    y = input('დარწმუნებული ხარ რომ გინდა დანებდე ?: [დიახ|არა] ')
+                    if y == 'დიახ':
+                        return None
+                user_end = self.current_player.ask_for_move()
+
+                start: Spot = self.board.get_spot(*user_start)
+                end: Spot = self.board.get_spot(*user_end)
+
+                valid = start.piece and self.current_player.color == start.piece.color and start.piece.can_move(start, end, self.board)
+                if valid:
+                    return start, end
+            except (IndexError, KeyError, ValueError):
+                pass
 
 
 if __name__ == '__main__':
-    b = Board()
-    print(b)
+    g = Game()
+    g.run()

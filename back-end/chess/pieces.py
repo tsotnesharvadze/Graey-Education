@@ -44,10 +44,21 @@ class Rook(Piece):
     }
 
     def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
-        # @TODO: როცა ეღობება ფიგურა
         super().can_move(start, end, board)
         dy, dx = self.get_distance(start, end)
-        return dy * dx == 0
+
+        if dy * dx != 0:
+            return False
+        elif dx != 0:
+            start_x, end_x = sorted([start.x, end.x])
+            return not any(board.board[start.y][start_x + 1:end_x])
+        else:
+            start_y, end_y = sorted([start.y, end.y])
+            for y in range(start_y + 1, end_y):
+                if board.get_spot(start.x, y):
+                    return False
+
+        return True
 
 
 class Pawn(Piece):
@@ -104,8 +115,24 @@ class Bishop(Piece):
 
     def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
         super().can_move(start, end, board)
-        dy, dx = self.get_distance(start, end)
-        return dy == dx
+        dy, dx = end.y - start.y, end.x - start.x
+
+        if abs(dx) != abs(dy):
+            return False
+
+        # Normalizing dx, dy to get directions
+        # ნორმალიზება dx, dy ცვლადების რათა ფიგურის მოძრაობის მიმართულება გავიგოთ
+        x_inc = dx // abs(dx)
+        y_inc = dy // abs(dy)
+
+        x, y = start.x, start.y
+        for _ in range(abs(dx)):
+            x += x_inc
+            y += y_inc
+            if board.get_spot(x, y):
+                return False
+
+        return True
 
 
 class King(Piece):
@@ -135,5 +162,34 @@ class Queen(Piece):
 
     def can_move(self, start: 'game.Spot', end: 'game.Spot', board: 'game.Board'):
         super().can_move(start, end, board)
-        dy, dx = self.get_distance(start, end)
-        return dy * dx == 0 or dy == dx
+        dy, dx = end.y - start.y, end.x - start.x,
+
+        if dx * dy == 0:
+            # behaves like Rook
+            if dx != 0:
+                start_x, end_x = sorted([start.x, end.x])
+                return not any(board.board[start.y][start_x + 1:end_x])
+            else:
+                start_y, end_y = sorted([start.y, end.y])
+                for y in range(start_y + 1, end_y):
+                    if board.get_spot(start.x, y):
+                        return False
+
+        else:
+            # behaves like bishop
+            if abs(dx) != abs(dy):
+                return False
+
+            # Normalizing dx, dy to get directions
+            # ნორმალიზება dx, dy ცვლადების რათა ფიგურის მოძრაობის მიმართულება გავიგოთ
+            x_inc = dx // abs(dx)
+            y_inc = dy // abs(dy)
+
+            x, y = start.x, start.y
+            for _ in range(abs(dx)):
+                x += x_inc
+                y += y_inc
+                if board.get_spot(x, y):
+                    return False
+
+        return True

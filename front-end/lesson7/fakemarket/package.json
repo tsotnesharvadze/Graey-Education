@@ -12,7 +12,8 @@
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-material": "^1.0.0-beta-15",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "vue3-carousel": "^0.1.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

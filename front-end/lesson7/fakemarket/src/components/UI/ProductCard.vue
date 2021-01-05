@@ -23,7 +23,7 @@
 
 <style scoped>
     .productContainer{
-        width: 300px;
+        width: 250px;
         height: 480px;
         border: 1px solid #c384845e;
         padding: 10px;
@@ -37,7 +37,7 @@
 
     }
     .productImageContainer{
-        width: 300px;
+        width: 250px;
         height: 340px;
         margin: 20px auto 0 auto;
 

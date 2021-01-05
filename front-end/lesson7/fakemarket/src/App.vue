@@ -18,6 +18,7 @@
 
     #app {
         padding: 10px;
+        display: flex;
     }
 
 </style>

@@ -1,8 +1,13 @@
 <template>
-    <div class="container">
-        <product-card v-for="product in productsList" :key="product.id" :product="product">
+    <div>
+        <div class="container">
+            <input id="search" type="text" v-model="textValue" placeholder="Search for product">
+        </div>
+        <div class="container">
+            <product-card v-for="product in filterSearch" :key="product.id" :product="product">
 
-        </product-card>
+            </product-card>
+        </div>
     </div>
 </template>
 
@@ -18,7 +23,8 @@
         },
         data(){
             return {
-                productsList: []
+                productsList: [],
+                textValue: '',
             }
         },
         mounted(){
@@ -28,6 +34,13 @@
             ).then((response)=>{
                 this.productsList = response.data
             })
+        },
+        computed:{
+            filterSearch: function(){
+                return this.productsList.filter((product) => {
+                    return product.title.toLowerCase().match(this.textValue.toLowerCase())
+                });
+            }
         }
     }
 </script>
@@ -39,6 +52,12 @@
         flex-wrap: wrap;
         column-gap: 10px;
         row-gap: 20px;
+    }
+    #search{
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 50%;
+        
     }
 
 </style>

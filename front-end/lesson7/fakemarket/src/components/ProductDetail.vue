@@ -1,9 +1,7 @@
 <template>
   <div class="productDetailContainer" v-if="product.id">
     <div class="productDetailHeader">
-      <span
-        ><router-link :to="{ name: 'productListing' }">Home</router-link></span
-      >
+      <DefaultButton />
       ➨ <span>{{ product.category }}</span> ➨ <span>{{ product.title }}</span>
     </div>
     <div class="productContentContainer">
@@ -27,8 +25,18 @@
     <div class="relatedProductsCarousel" v-if="relatedProducts.length">
       <carousel :items-to-show="4" :wrap-around="true" :transition="300">
         <slide v-for="product in relatedProducts" :key="product.id">
-          <product-card :product="product"></product-card>
+          
+          <product-card :product="product">
+            <template #title="propsList">
+              <p>{{ propsList.title }} - {{ propsList.id }}</p>
+            </template>
+            <template #image>
+              <img :src="product.image" alt="" />
+            </template>
+          </product-card>
+
         </slide>
+
         <template #addons>
           <navigation />
           <pagination />
@@ -40,9 +48,11 @@
 
 <script>
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
+
 import ProductCard from "./UI/ProductCard";
 import "vue3-carousel/dist/carousel.css";
 import { mapActions, mapGetters } from "vuex";
+import DefaultButton from "./UI/DefaultButton.vue";
 
 export default {
   name: "ProductDetail",
@@ -52,6 +62,7 @@ export default {
     ProductCard,
     Pagination,
     Navigation,
+    DefaultButton,
   },
   mounted() {
     this.fetchData();

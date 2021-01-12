@@ -2,10 +2,12 @@ import { createStore } from 'vuex';
 import urls from "../api/urls";
 import axios from "axios";
 import productDetail from "./productDetail";
+import Filters from "./filters";
 
 const store = createStore({
     modules: {
-        det: productDetail
+        det: productDetail,
+        filter: Filters,
     },
     state() {
         return {

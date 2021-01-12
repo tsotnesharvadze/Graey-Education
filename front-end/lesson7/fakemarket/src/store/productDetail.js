@@ -25,7 +25,7 @@ export default {
         },
     },
     actions: {
-        fetchRelatedProducts({ commit, state, getters }) {
+        fetchRelatedProducts({ commit }) {
             axios
                 .get(urls.productListing)
                 .then((response) => {

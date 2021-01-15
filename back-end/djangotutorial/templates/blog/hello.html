@@ -1,13 +1,7 @@
-<h1>
-    Hello Students!
-</h1>
+<h1>POSTS</h1>
 
-<p>
-    {{ time }}
-</p>
-
-
-<h4> Lecturers</h4>
-{% for item in items %}
-   <p>{{ item.username }}</p>
+{% for post in posts %}
+    <h4>{{ post.title }} {{ post.pk }}</h4>
+    <span>{{ post.text }}</span>
+    <p>{{ post.date }}</p>
 {% endfor %}

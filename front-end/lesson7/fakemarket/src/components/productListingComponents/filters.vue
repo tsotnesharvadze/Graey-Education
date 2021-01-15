@@ -2,15 +2,11 @@
     <div class="filtersContainer">
         <div class="categoryFilter">
             <ul>
-                <li>
-                    <input :id="category+index" type="radio" name="category" v-model="selectedCategory" :value="null"
-                           @change="filterByCategory">
-                    <label :for="category+index">all</label>
-                </li>
                 <li v-for="(category, index) in categories" :key="index">
-                    <input :id="category+index" type="radio" name="category" v-model="selectedCategory"
-                           :value="category" @change="filterByCategory">
-                    <label :for="category+index">{{category}}</label>
+                    <!-- <input :id="category+index" type="radio" name="category" v-model="selectedCategory"
+                           :value="category" @change="filterByCategory"> -->
+                    <slot name="categoryName" :displayTitle="category"></slot>
+                    <!-- <label :for="category+index">{{category}}</label> -->
                 </li>
             </ul>
         </div>
@@ -18,30 +14,31 @@
 </template>
 
 <script>
-    import axios from "axios";
-    import urls from "../../api/urls";
+    import { mapGetters } from "vuex";
 
     export default {
         name: "filters",
-        data() {
-            return {
-                categories: [],
-                selectedCategory: this.$route.query.category || null
-            }
+        // data() {
+        //     return {
+        //         selectedCategory: this.$route.query.category || 'all'
+        //     }
+        // },
+        computed: {
+            ...mapGetters(['categories']),
         },
-        mounted() {
-            axios.get(
-                urls.categories
-            ).then((response) => {
-                this.categories = response.data
-            });
+        // mounted() {
+        //     axios.get(
+        //         urls.categories
+        //     ).then((response) => {
+        //         this.categories = response.data
+        //     });
             // this.selectedCategory = this.$route.query.category || null
-        },
-        methods: {
-            filterByCategory() {
-                this.$emit('changeCategory', this.selectedCategory)
-            }
-        }
+        // },
+        // methods: {
+        //     filterByCategory() {
+        //         this.$emit('changeCategory', this.selectedCategory)
+        //     }
+        // }
     }
 </script>
 

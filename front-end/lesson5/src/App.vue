@@ -1,13 +1,21 @@
 <template>
-  <div>
+  <div class="main-content">
+    <page-head></page-head>
+
+    <router-view></router-view>
+
+  </div>
+
+  <!-- <div>
     <img alt="Vue logo" src="./assets/logo.png" />
     <list-display v-model:brandList="brandNames"></list-display>
     <p>{{brandNames}}</p>
-  </div>
+  </div> -->
 </template>
 
 <script>
-import Test from "./components/Test.vue";
+// import Test from "./components/Test.vue";
+import Header from "./components/Header.vue";
 
 export default {
   name: "App",
@@ -43,7 +51,8 @@ export default {
     };
   },
   components: {
-    "list-display": Test,
+    // "list-display": Test,
+    "page-head": Header,
   },
 };
 </script>
@@ -56,5 +65,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.router-link-active {
+  background: green;
+}
+
+.router-link-exact-active {
+  background: red;
 }
 </style>

@@ -16,11 +16,11 @@ class StoreAdmin(admin.ModelAdmin):
 @admin.register(Book)
 class BookModelAdmin(admin.ModelAdmin):
     readonly_fields = ['created', 'updated']
-    # list_display = ['__str__', 'quantity']
-    # list_editable = ['quantity']
+    list_display = ['__str__', ]
     search_fields = ['name', 'author__full_name']
     list_filter = ['author']
     inlines = [StoreToBookInline]
+    filter_horizontal = ('author',)
 
 
 @admin.register(Author)

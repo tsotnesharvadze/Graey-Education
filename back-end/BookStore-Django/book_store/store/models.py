@@ -32,7 +32,7 @@ class Book(models.Model):
     name = models.CharField(max_length=100, verbose_name="Book Name", unique=True)
     created = models.DateTimeField(verbose_name="Added Date/Time", auto_now_add=True)
     updated = models.DateTimeField(verbose_name="Updated Date/Time", auto_now=True)
-    author = models.ForeignKey(to='store.Author', on_delete=models.PROTECT)
+    author = models.ManyToManyField(to='store.Author', blank=True)
 
     class Meta:
         # unique_together = ('name', 'author')

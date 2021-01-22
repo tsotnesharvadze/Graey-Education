@@ -10,19 +10,28 @@ class Location(models.Model):
     zip = models.CharField(max_length=7)
 
     def __str__(self):
-        return self.city
+        return f'{self.city} : {self.street_address}: {self.zip}'
+
+
+class StoreToBook(models.Model):
+    store = models.ForeignKey(to='store.Store', on_delete=models.CASCADE, related_name='store_to_books')
+    book = models.ForeignKey(to='store.Book', on_delete=models.CASCADE, related_name='store_to_books')
+    quantity = models.PositiveSmallIntegerField('Quantity', default=0)
 
 
 class Store(models.Model):
     title = models.CharField(max_length=255, verbose_name=_('Title'))
     location = models.OneToOneField('store.Location', on_delete=models.PROTECT, related_name='store')
+    books = models.ManyToManyField(to='store.Book', blank=True, related_name='stores', through='store.StoreToBook')
+
+    def __str__(self):
+        return self.title
 
 
 class Book(models.Model):
     name = models.CharField(max_length=100, verbose_name="Book Name", unique=True)
     created = models.DateTimeField(verbose_name="Added Date/Time", auto_now_add=True)
     updated = models.DateTimeField(verbose_name="Updated Date/Time", auto_now=True)
-    quantity = models.PositiveSmallIntegerField(verbose_name="Stock", default=0)
     author = models.ForeignKey(to='store.Author', on_delete=models.PROTECT)
 
     class Meta:

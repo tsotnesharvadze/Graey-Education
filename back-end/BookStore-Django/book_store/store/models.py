@@ -1,14 +1,29 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from store.choices import GenderChoices
 
 
-class BookModel(models.Model):
+class Location(models.Model):
+    city = models.CharField(max_length=255)
+    street_address = models.CharField(max_length=255)
+    zip = models.CharField(max_length=7)
+
+    def __str__(self):
+        return self.city
+
+
+class Store(models.Model):
+    title = models.CharField(max_length=255, verbose_name=_('Title'))
+    location = models.OneToOneField('store.Location', on_delete=models.PROTECT, related_name='store')
+
+
+class Book(models.Model):
     name = models.CharField(max_length=100, verbose_name="Book Name", unique=True)
     created = models.DateTimeField(verbose_name="Added Date/Time", auto_now_add=True)
     updated = models.DateTimeField(verbose_name="Updated Date/Time", auto_now=True)
     quantity = models.PositiveSmallIntegerField(verbose_name="Stock", default=0)
-    author = models.ForeignKey(to='store.AuthorModel', on_delete=models.PROTECT)
+    author = models.ForeignKey(to='store.Author', on_delete=models.PROTECT)
 
     class Meta:
         # unique_together = ('name', 'author')
@@ -22,7 +37,7 @@ class BookModel(models.Model):
         return f'რაოდენობაშია: {self.quantity}'
 
 
-class AuthorModel(models.Model):
+class Author(models.Model):
     full_name = models.CharField("Full Name", max_length=255)
     age = models.PositiveSmallIntegerField("Age")
     gender = models.PositiveSmallIntegerField("Gender", choices=GenderChoices.choices, default=GenderChoices.Other)

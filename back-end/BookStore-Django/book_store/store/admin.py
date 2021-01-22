@@ -1,8 +1,9 @@
 from django.contrib import admin
-from store.models import BookModel, AuthorModel
+
+from store.models import Book, Author
 
 
-@admin.register(BookModel)
+@admin.register(Book)
 class BookModelAdmin(admin.ModelAdmin):
     readonly_fields = ['created', 'updated']
     list_display = ['__str__', 'quantity']
@@ -11,8 +12,7 @@ class BookModelAdmin(admin.ModelAdmin):
     list_filter = ['author']
 
 
-@admin.register(AuthorModel)
+@admin.register(Author)
 class AuthorModelAdmin(admin.ModelAdmin):
     pass
 
-# admin.site.register(AuthorModel)

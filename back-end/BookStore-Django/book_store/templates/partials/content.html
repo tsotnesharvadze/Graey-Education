@@ -1,0 +1,11 @@
+<div>
+    <span>{{ store.title }}</span> - <span>{{ store.location.city }}</span>
+    {% for book in store.books.all %}
+        <div class="book">{{ book }}</div>
+    {% endfor %}
+
+</div>
+<br>
+<br>
+<br>
+<br>

@@ -25,7 +25,7 @@ SECRET_KEY = '6_1s*o=x8%a_fim_u0$=^e$+&ks2187x1&fb6a%gg(dw7j0xdy'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'book_store.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / Path('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

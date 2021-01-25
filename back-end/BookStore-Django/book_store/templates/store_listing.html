@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Store Listing</title>
+    <style>
+        div{
+            background: red;
+        }
+        .book{
+            color: green;
+        }
+    </style>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+{% for i in stores %}
+    {% include 'partials/content.html' with store=i  %}
+{% endfor %}
+</body>
+</html>

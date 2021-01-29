@@ -43,7 +43,7 @@ class Book(models.Model):
         return self.name
 
     def get_quantity(self):
-        return f'რაოდენობაშია: {self.quantity}'
+        return f'რაოდენობაშია: 4'
 
 
 class Author(models.Model):

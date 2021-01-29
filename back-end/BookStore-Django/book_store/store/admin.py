@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from store.models import StoreToBook, Author, Store, Book
+from store.models import StoreToBook, Author, Store, Book, Location
 
 
 class StoreToBookInline(admin.TabularInline):
@@ -25,4 +25,8 @@ class BookModelAdmin(admin.ModelAdmin):
 
 @admin.register(Author)
 class AuthorModelAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
     pass

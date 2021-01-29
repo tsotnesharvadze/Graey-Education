@@ -2,7 +2,7 @@
 __pycache__
 node_modules
 /dist
-
+media
 
 # local env files
 .env.local

@@ -14,16 +14,25 @@ from wash.models import Order
 # @TODO: Add Manager Method For Washer Listing
 
 def washer_list_view(request: WSGIRequest) -> HttpResponse:
+    washer_q = Q()
+    order_q = Q()
+    q = request.GET.get('q')
+
+    if q:
+        washer_q &= Q(first_name__icontains=q[-1]) | Q(last_name__icontains=q[-1])
+        order_q &= Q(employee__first_name__icontains=q[-1]) | Q(employee__last_name__icontains=q[-1])
+
     profit_q = ExpressionWrapper(
         F('price') * (1 - F('employee__salary') / Decimal('100.0')),
         output_field=DecimalField()
     )
-    order_info: Dict[str, Optional[Decimal]] = Order.objects.filter(end_date__isnull=False) \
+    order_info: Dict[str, Optional[Decimal]] = Order.objects.filter(end_date__isnull=False).filter(order_q) \
         .annotate(profit_per_order=profit_q) \
         .aggregate(profit=Sum('profit_per_order'), total=Count('id'))
 
     context = {
-        'washers': User.objects.filter(status=User.Status.washer.value).annotate(washed_count=Count('orders')),
+        'washers': User.objects.filter(status=User.Status.washer.value).filter(washer_q).annotate(
+            washed_count=Count('orders')),
         # **order_info
     }
     context.update(order_info)
@@ -42,7 +51,7 @@ def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
     )
     now = timezone.now()
     washer_salary_info: Dict[str, Optional[Decimal]] = washer.orders.filter(end_date__isnull=False) \
-        .annotate(earned_per_order=earned_money_q)\
+        .annotate(earned_per_order=earned_money_q) \
         .aggregate(
         earned_money_year=Sum(
             'earned_per_order',

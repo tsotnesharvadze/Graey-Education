@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load user_utilities %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col s12 m7">
+            <div class="card">
+                <div class="card-image">
+                    <img src="{{ washer.image.url }}">
+                    {% if washer.first_name %}
+                        <span class="card-title">{{ washer.get_full_name }}</span>
+                    {% endif %}
+                {% if washer.birthdate|is_adult:16 %}
+                    <p> Is adult </p>
+                {% endif %}
+                </div>
+                <div class="card-content">
+                    <p> {{ washer.get_full_name }}</p>
+                    <p>I have washed {{ washer.washed_count }}</p>
+                </div>
+                {#                <div class="card-action">#}
+                {#                    <a href="#">Read More</a>#}
+                {#                </div>#}
+            </div>
+        </div>
+        <div class="col s12 m5">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">next_week</i>
+                        Week
+                        <span class="new badge">1</span></div>
+                    <div class="collapsible-body">
+                        <p>Earned: {{ earned_money_week}}</p>
+                        <p>Count: {{ washed_last_week}}</p>
+
+                    </div>
+                </li>
+                <li class="active">
+                    <div class="collapsible-header">
+                        <i class="material-icons">monetization_on</i>
+                        Month
+                        <span class="badge">1</span></div>
+                    <div class="collapsible-body">
+                        <p>Earned: {{ earned_money_month}}</p>
+                        <p>Count: {{ washed_last_month}}</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">money_off</i>
+                        Year
+                        <span class="badge">1</span></div>
+                    <div class="collapsible-body">
+                        <p>Earned: {{ earned_money_year}}</p>
+                        <p>Count: {{ washed_last_year}}</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems, options);
+        });
+
+        // Or with jQuery
+
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
+
+    </script>
+{% endblock %}

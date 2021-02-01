@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import IntegerField
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -58,6 +59,7 @@ class Order(models.Model):
         to='user.User', on_delete=models.SET_NULL,
         null=True, related_name='orders',
     )
+    # @TODO: washer_percentage
     coupon = models.ForeignKey(
         to='Coupon', related_name='orders',
         on_delete=models.PROTECT,

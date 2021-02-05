@@ -41,6 +41,13 @@ def washer_list_view(request: WSGIRequest) -> HttpResponse:
 
 
 def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
+    if request.method == 'POST':
+        print(request.POST)
+        Order.objects.create(
+            # request.POST['note']
+            note=request.POST.get('note', '')
+        )
+
     washer: User = get_object_or_404(
         User.objects.filter(status=User.Status.washer.value),
         pk=pk

@@ -1,0 +1,26 @@
+<form action="." method="post">
+    {% csrf_token %}
+    <div>
+        <label for="note">Note</label>
+        <input type="text" id="note" name="note">
+    </div>
+
+    <div>
+        <label for="wash_type">Choose a wash type:</label>
+        <select id="wash_type" name="wash_type">
+            {% for wash_type in wash_types %}
+                <option value="{{ wash_type.pk }}">{{ wash_type }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="car">Choose a car:</label>
+        <select id="car" name="car">
+            {% for car in cars %}
+                <option value="{{ car.pk }}">{{ car }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button>Submit</button>
+</form>

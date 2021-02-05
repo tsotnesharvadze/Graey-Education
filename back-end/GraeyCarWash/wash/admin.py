@@ -7,9 +7,7 @@ from wash.models import CarType, WashType, Coupon, Order, Car
 class CarTypeAdmin(admin.ModelAdmin):
     fieldsets = (
         (None,
-         {
-             'fields': ('name', 'price')
-         }
+         {'fields': ('name', 'price')}
          ),
     )
 

@@ -4,14 +4,15 @@ from typing import Dict, Optional
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import F, Sum, ExpressionWrapper, DecimalField, Count, Q
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from user.models import User
+from wash.forms import ContactForm
+# @TODO: Add Manager Method For Washer Listing
+from wash.forms import OrderForm
 from wash.models import Order
 
-
-# @TODO: Add Manager Method For Washer Listing
 
 def washer_list_view(request: WSGIRequest) -> HttpResponse:
     washer_q = Q()
@@ -40,13 +41,19 @@ def washer_list_view(request: WSGIRequest) -> HttpResponse:
     return render(request=request, template_name='wash/washer-list.html', context=context)
 
 
+# Dispatch (type) -> view
+
 def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
+    order_form = OrderForm()
     if request.method == 'POST':
-        print(request.POST)
-        Order.objects.create(
-            # request.POST['note']
-            note=request.POST.get('note', '')
-        )
+        order_form = OrderForm(request.POST)
+        if order_form.is_valid():
+            order: Order = order_form.save(commit=False)
+            order.employee_id = pk
+            order.start_date = timezone.now()
+            order.save()
+
+        return redirect('wash:washer-detail', pk=pk)
 
     washer: User = get_object_or_404(
         User.objects.filter(status=User.Status.washer.value),
@@ -90,3 +97,32 @@ def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
         'washer': washer,
         **washer_salary_info
     })
+
+
+def contact(request: WSGIRequest):
+    contact_form = ContactForm()
+    if request.method == 'POST':
+        contact_form.is_valid()
+        contact_form = ContactForm(request.POST)
+        # send_mail()
+    return render(request, template_name='wash/contact.html', context={
+        'contact_form': contact_form
+    })
+
+
+def make_order(request: WSGIRequest, pk: int):
+    order_form = OrderForm()
+    if request.method == 'POST':
+        order_form = OrderForm(request.POST)
+        if order_form.is_valid():
+            order: Order = order_form.save(commit=False)
+            order.employee_id = pk
+            order.start_date = timezone.now()
+            order.save()
+
+        return redirect('wash:washer-detail')
+
+    return render(request, template_name='wash/contact.html', context={
+        'contact_form': order_form
+    })
+

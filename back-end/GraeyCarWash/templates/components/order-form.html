@@ -1,0 +1,61 @@
+{#                <form class="col s12" enctype="multipart/form-data">#}
+<form action="." class="col s12" method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="input-field col s6">
+            {{ order_form.car }}
+            <label for="id_car">Choose a car:</label>
+            {% for error in order_form.errors.car %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="input-field col s6">
+            {{ order_form.wash_type }}
+            <label for="id_wash_type">Choose a wash type:</label>
+            {% for error in order_form.errors.wash_type %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s6">
+{#            <i class="material-icons prefix">mode_edit</i>#}
+            {{ order_form.start_date_day }}
+            <label for="id_start_date_day">Note</label>
+            {% for error in order_form.errors.start_date_day %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="input-field col s6">
+{#            <i class="material-icons prefix">mode_edit</i>#}
+            {{ order_form.start_date_time }}
+            <label for="id_start_date_time">Note</label>
+            {% for error in order_form.errors.start_date_time %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">mode_edit</i>
+            {{ order_form.note }}
+            <label for="id_note">Note</label>
+            {% for error in order_form.errors.note %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 center">
+            <button class="btn waves-effect waves-light" type="submit" name="action">გაგზავნა
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </div>
+</form>
+
+<style>
+    .error{
+        color: red;
+    }
+</style>

@@ -74,7 +74,7 @@ class Order(models.Model):
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_("Created date"))
     start_date = models.DateTimeField(verbose_name=_('Scheduled time'))
-    end_date = models.DateTimeField(verbose_name=_('Scheduled time'), blank=True, null=True)
+    end_date = models.DateTimeField(verbose_name=_('End time'), blank=True, null=True)
 
     def __str__(self):
         return f'{self.car} using {self.wash_type}'

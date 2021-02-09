@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from typing import Dict, Optional
 
@@ -50,10 +51,19 @@ def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
         if order_form.is_valid():
             order: Order = order_form.save(commit=False)
             order.employee_id = pk
-            order.start_date = timezone.now()
-            order.save()
+            try:
+                start_date = datetime.strptime(
+                    " ".join([
+                        order_form.cleaned_data['start_date_day'],
+                        order_form.cleaned_data['start_date_time']
+                    ]),
+                    '%d/%m/%Y %H:%M'
+                )
+                order.start_date = start_date
+                order.save()
+            except ValueError:
+                order_form.add_error('start_date_day', 'პაპს ნუ ატყუებ')
 
-        return redirect('wash:washer-detail', pk=pk)
 
     washer: User = get_object_or_404(
         User.objects.filter(status=User.Status.washer.value),
@@ -95,15 +105,18 @@ def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
 
     return render(request, template_name='wash/washer-detail.html', context={
         'washer': washer,
-        **washer_salary_info
+        **washer_salary_info,
+        'order_form': order_form
     })
 
 
 def contact(request: WSGIRequest):
     contact_form = ContactForm()
     if request.method == 'POST':
-        contact_form.is_valid()
         contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
+            print(contact_form.cleaned_data.get('phone'))
+            # contact_form.errors.as_json()
         # send_mail()
     return render(request, template_name='wash/contact.html', context={
         'contact_form': contact_form

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<div class="container pt-30">
+    <div class="section">
+        <div class="row">
+            <div class="col s12">
+                <form class="col s12" action="{% url 'user:user_registration' %}" method="POST" enctype="multipart/form-data" autocomplete="off" novalidate>
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="input-field col m6 s12">
+                            {{ form.first_name}}
+                            <label for="id_first_name">First Name</label>
+                            {% for error in form.errors.first_name %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="input-field col m6 s12">
+                            {{ form.last_name}}
+                            <label for="id_last_name">Last Name</label>
+                            {% for error in form.errors.last_name %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col m6 s12">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    {{ form.email }}
+                                    <label for="id_email">Email</label>
+                                    {% for error in form.errors.email %}
+                                        <p class="error">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    {{ form.phone_number }}
+                                    <label for="id_phone_number">Phone</label>
+                                    {% for error in form.errors.phone_number %}
+                                        <p class="error">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m6 s12">
+                            <div class="row">
+                                <div class="col s12 center">
+                                    {{ form.image }}
+                                    <label for="{{ form.image.id_for_label }}" class="btn waves-effect waves-light">
+                                        სურათის ატვირთვა
+                                        <i class="material-icons right">upload</i>
+                                    </label>
+                                    {% for error in form.errors.image %}
+                                        <p class="error">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 center">
+                                    {{ form.birthdate }}
+                                    <label for="{{ form.birthdate.id_for_label }}">Birthdate</label>
+                                    {% for error in form.errors.birthdate %}
+                                        <p class="error">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col m6 s12">
+                            {{ form.password1 }}
+                            <label for="{{ form.password1.id_for_label }}">Password</label>
+                            {% for error in form.errors.password1 %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="input-field col m6 s12">
+                            {{ form.password2 }}
+                            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                            {% for error in form.errors.password2 %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 center">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">
+                                რეგისტრაცია
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="row">
+            <div class="col s12 center">
+                <a href="{% url 'user:user_login' %}">უკვე რეგისტრირებული ხარ?</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+    <style>
+        #id_image{
+            display: none;
+        }
+    </style>
+{% endblock %}

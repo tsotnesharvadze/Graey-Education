@@ -108,34 +108,3 @@ def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
         **washer_salary_info,
         'order_form': order_form
     })
-
-
-def contact(request: WSGIRequest):
-    contact_form = ContactForm()
-    if request.method == 'POST':
-        contact_form = ContactForm(request.POST)
-        if contact_form.is_valid():
-            print(contact_form.cleaned_data.get('phone'))
-            # contact_form.errors.as_json()
-        # send_mail()
-    return render(request, template_name='wash/contact.html', context={
-        'contact_form': contact_form
-    })
-
-
-def make_order(request: WSGIRequest, pk: int):
-    order_form = OrderForm()
-    if request.method == 'POST':
-        order_form = OrderForm(request.POST)
-        if order_form.is_valid():
-            order: Order = order_form.save(commit=False)
-            order.employee_id = pk
-            order.start_date = timezone.now()
-            order.save()
-
-        return redirect('wash:washer-detail')
-
-    return render(request, template_name='wash/contact.html', context={
-        'contact_form': order_form
-    })
-

@@ -5,6 +5,22 @@
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
             <li><a href="{% url 'wash:washer-list' %}">Washers</a></li>
+            {% if user.is_authenticated %}
+            <li><span>{{ user.email }}</span></li>
+            <li>
+                <form action="{% url 'user:user_logout' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col s12">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">
+                                გასვლა
+{#                                <i class="material-icons right">logout</i>#}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

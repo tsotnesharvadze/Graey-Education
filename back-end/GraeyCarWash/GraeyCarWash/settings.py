@@ -130,3 +130,7 @@ AUTH_USER_MODEL = 'user.User'
 DATE_INPUT_FORMATS = [
     '%d/%m/%Y'
 ]
+
+LOGIN_URL = 'user:user_login'
+LOGOUT_REDIRECT_URL = 'user:user_login'
+LOGIN_REDIRECT_URL = 'wash:washer-list'

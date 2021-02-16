@@ -5,11 +5,10 @@ from typing import Dict, Optional
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import F, Sum, ExpressionWrapper, DecimalField, Count, Q
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 
 from user.models import User
-from wash.forms import ContactForm
 # @TODO: Add Manager Method For Washer Listing
 from wash.forms import OrderForm
 from wash.models import Order

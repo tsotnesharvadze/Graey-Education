@@ -7,6 +7,7 @@ from django.db.models import F, Sum, ExpressionWrapper, DecimalField, Count, Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
+from django.views.generic import DetailView
 
 from user.models import User
 # @TODO: Add Manager Method For Washer Listing
@@ -43,13 +44,19 @@ def washer_list_view(request: WSGIRequest) -> HttpResponse:
 
 # Dispatch (type) -> view
 
-def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
-    order_form = OrderForm()
-    if request.method == 'POST':
-        order_form = OrderForm(request.POST)
+class WasherDetail(DetailView):
+    form = OrderForm
+    template_name='wash/washer-detail.html'
+    context_object_name = 'washer'
+    queryset = User.objects.filter(status=User.Status.washer)
+    model = User
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        order_form = self.form(request.POST)
         if order_form.is_valid():
             order: Order = order_form.save(commit=False)
-            order.employee_id = pk
+            order.employee_id = self.object.pk
             try:
                 start_date = datetime.strptime(
                     " ".join([
@@ -60,50 +67,47 @@ def washer_detail(request: WSGIRequest, pk: int) -> HttpResponse:
                 )
                 order.start_date = start_date
                 order.save()
+                order_form = self.form
             except ValueError:
                 order_form.add_error('start_date_day', 'პაპს ნუ ატყუებ')
+        return render(request, self.template_name, self.get_context_data(
+            form=order_form
+        ))
 
-
-    washer: User = get_object_or_404(
-        User.objects.filter(status=User.Status.washer.value),
-        pk=pk
-    )
-    earned_money_q = ExpressionWrapper(
-        F('price') * F('employee__salary') / Decimal('100.0'),
-        output_field=DecimalField()
-    )
-    now = timezone.now()
-    washer_salary_info: Dict[str, Optional[Decimal]] = washer.orders.filter(end_date__isnull=False) \
-        .annotate(earned_per_order=earned_money_q) \
-        .aggregate(
-        earned_money_year=Sum(
-            'earned_per_order',
-            filter=Q(end_date__gte=now - timezone.timedelta(days=365))
-        ),
-        washed_last_year=Count(
-            'id',
-            filter=Q(end_date__gte=now - timezone.timedelta(days=365))
-        ),
-        earned_money_month=Sum(
-            'earned_per_order',
-            filter=Q(end_date__gte=now - timezone.timedelta(weeks=4))
-        ),
-        washed_last_month=Count(
-            'id',
-            filter=Q(end_date__gte=now - timezone.timedelta(weeks=4))
-        ),
-        earned_money_week=Sum(
-            'earned_per_order',
-            filter=Q(end_date__gte=now - timezone.timedelta(days=7))
-        ),
-        washed_last_week=Count(
-            'id',
-            filter=Q(end_date__gte=now - timezone.timedelta(days=7))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        earned_money_q = ExpressionWrapper(
+            F('price') * F('employee__salary') / Decimal('100.0'),
+            output_field=DecimalField()
         )
-    )
-
-    return render(request, template_name='wash/washer-detail.html', context={
-        'washer': washer,
-        **washer_salary_info,
-        'order_form': order_form
-    })
+        now = timezone.now()
+        washer_salary_info: Dict[str, Optional[Decimal]] = self.object.orders.filter(end_date__isnull=False) \
+            .annotate(earned_per_order=earned_money_q) \
+            .aggregate(
+            earned_money_year=Sum(
+                'earned_per_order',
+                filter=Q(end_date__gte=now - timezone.timedelta(days=365))
+            ),
+            washed_last_year=Count(
+                'id',
+                filter=Q(end_date__gte=now - timezone.timedelta(days=365))
+            ),
+            earned_money_month=Sum(
+                'earned_per_order',
+                filter=Q(end_date__gte=now - timezone.timedelta(weeks=4))
+            ),
+            washed_last_month=Count(
+                'id',
+                filter=Q(end_date__gte=now - timezone.timedelta(weeks=4))
+            ),
+            earned_money_week=Sum(
+                'earned_per_order',
+                filter=Q(end_date__gte=now - timezone.timedelta(days=7))
+            ),
+            washed_last_week=Count(
+                'id',
+                filter=Q(end_date__gte=now - timezone.timedelta(days=7))
+            )
+        )
+        form = kwargs.get('form', self.form)
+        return {**context, **washer_salary_info, 'order_form': form}

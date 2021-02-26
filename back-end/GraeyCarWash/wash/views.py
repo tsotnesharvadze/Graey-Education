@@ -7,7 +7,8 @@ from django.db.models import F, Sum, ExpressionWrapper, DecimalField, Count, Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from django.views.generic import DetailView
+from django.views.generic import DetailView, FormView
+from django.views.generic.edit import FormMixin
 
 from user.models import User
 # @TODO: Add Manager Method For Washer Listing
@@ -44,16 +45,19 @@ def washer_list_view(request: WSGIRequest) -> HttpResponse:
 
 # Dispatch (type) -> view
 
-class WasherDetail(DetailView):
-    form = OrderForm
+class WasherDetail(DetailView, FormMixin):
+    form_class = OrderForm
     template_name='wash/washer-detail.html'
     context_object_name = 'washer'
     queryset = User.objects.filter(status=User.Status.washer)
     model = User
 
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        order_form = self.form(request.POST)
+        order_form = self.get_form()
         if order_form.is_valid():
             order: Order = order_form.save(commit=False)
             order.employee_id = self.object.pk
@@ -67,12 +71,10 @@ class WasherDetail(DetailView):
                 )
                 order.start_date = start_date
                 order.save()
-                order_form = self.form
+                return self.form_valid(form=order_form)
             except ValueError:
                 order_form.add_error('start_date_day', 'პაპს ნუ ატყუებ')
-        return render(request, self.template_name, self.get_context_data(
-            form=order_form
-        ))
+        return self.form_invalid(form=order_form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,5 +111,4 @@ class WasherDetail(DetailView):
                 filter=Q(end_date__gte=now - timezone.timedelta(days=7))
             )
         )
-        form = kwargs.get('form', self.form)
-        return {**context, **washer_salary_info, 'order_form': form}
+        return {**context, **washer_salary_info}

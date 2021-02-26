@@ -5,8 +5,11 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_email
 from django.db import models
 from django.db.models import IntegerChoices
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import DetailView
+from django.views.generic.edit import FormMixin
 
 
 class UserManager(BaseUserManager):
@@ -75,3 +78,6 @@ class User(AbstractUser):
     class Meta:
         verbose_name = _('Employee')
         verbose_name_plural = _('Employees')
+
+    def get_absolute_url(self):
+        return reverse('wash:washer-detail', kwargs={'pk': self.pk})
